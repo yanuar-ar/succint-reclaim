@@ -1,0 +1,12 @@
+[package]
+version = "0.1.0"
+name = "fibonacci-program"
+edition = "2021"
+
+[dependencies]
+alloy-sol-types = "0.8.8"
+sp1-zkvm = "2.0.0"
+fibonacci-lib = { path = "../lib" }
+rustls-rustcrypto = "0.0.2-alpha"
+alloy-primitives = "0.8.8"
+serde_json = "1.0.131"
