@@ -1,7 +1,7 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-use alloy_primitives::{keccak256, Address, FixedBytes, B256, U256};
+use alloy_primitives::{keccak256, Address, Bytes, FixedBytes, B256, U256};
 use alloy_sol_types::{sol, SolValue};
 use serde_json::Value;
 use std::str::FromStr;
@@ -103,6 +103,13 @@ pub fn main() {
         .as_u64()
         .unwrap() as u32;
 
+    let signatures = parsed_data["signedClaim"]["signatures"]
+        .as_array()
+        .unwrap()
+        .iter() // Changed from into_iter() to iter()
+        .map(|v| v.as_str().unwrap().to_string().into())
+        .collect::<Vec<Bytes>>();
+
     // encode ABI
     let bytes = PublicValuesStruct::abi_encode(&PublicValuesStruct {
         amount: U256::from(n),
@@ -114,7 +121,7 @@ pub fn main() {
                 owner,
                 timestampS: timestamp,
             },
-            signatures: vec![],
+            signatures,
         },
     });
 
